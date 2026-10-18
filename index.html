@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Obsidianで開く</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f7f5f0; --fg: #222; --accent: #7c3aed; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #1e1e1e; --fg: #eee; --accent: #a78bfa; } }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--fg);
+         font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; padding: 0 16px; }
+  main { text-align: center; max-width: 28rem; }
+  h1 { font-size: 1.4rem; margin: 0 0 1.5rem; word-break: break-all; }
+  a.button { display: inline-block; padding: 0.9rem 2rem; border-radius: 999px; background: var(--accent); color: #fff;
+             text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+  p { opacity: 0.7; font-size: 0.9rem; margin-top: 1.5rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="name">…</h1>
+  <a class="button" id="open" href="#">Obsidianで開く</a>
+  <p id="hint">自動で切り替わらないときは、ボタンをタップしてください。</p>
+</main>
+<script>
+  // ?f=<ノート名またはパス>&v=<Vault名(省略時 KM)> を obsidian://open に転送するだけのページ
+  const q = new URLSearchParams(location.search);
+  const file = q.get("f");
+  const vault = q.get("v") || "KM";
+  const name = document.getElementById("name");
+  const button = document.getElementById("open");
+  if (file) {
+    const url = "obsidian://open?vault=" + encodeURIComponent(vault) + "&file=" + encodeURIComponent(file);
+    name.textContent = file;
+    button.href = url;
+    location.href = url;
+  } else {
+    name.textContent = "開くノートが指定されていません";
+    button.hidden = true;
+    document.getElementById("hint").hidden = true;
+  }
+</script>
+</body>
+</html>
